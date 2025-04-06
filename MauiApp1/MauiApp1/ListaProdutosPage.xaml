@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.ListaProdutosPage"
+             Title="ListaProdutosPage">
+    <VerticalStackLayout Padding="20" Spacing="10">
+
+        <Label Text="Lista de Produtos" FontSize="24" HorizontalOptions="Center"/>
+
+
+        <ListView x:Name="produtosListView">
+
+            <ListView.ItemTemplate>
+
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="10" RowSpacing="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Text="{Binding Nome}" FontSize="Title" TextColor="White"/>
+                            <Label Grid.Row="1" Text="{Binding PrecoFormatado}" TextColor="White"/>
+                            <Label Grid.Row="2" Text="{Binding Categoria, StringFormat='Categoria: {0}'}" TextColor="White"/>
+                            <Label Grid.Row="3" Text="{Binding Validade, StringFormat='Validade: {0:dd/MM/yyyy}'}" TextColor="White"/>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+
+            </ListView.ItemTemplate>
+
+        </ListView>
+
+    </VerticalStackLayout>
+</ContentPage>
