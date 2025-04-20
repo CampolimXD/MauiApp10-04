@@ -8,7 +8,18 @@
             <Label Text="Cadastro de Produtos" FontSize="24" HorizontalOptions="Center"/>
             <Entry x:Name="nomeEntry" Placeholder="Nome do Produto"/>
             <Entry x:Name="precoEntry" Placeholder="Preço" Keyboard="Numeric"/>
-            <Entry x:Name="categoriaEntry" Placeholder="Categoria" />
+            <Picker x:Name="CategoriaPicker" Title="Categoria">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>Todas</x:String>
+                        <x:String>Alimentos</x:String>
+                        <x:String>Eletrônicos</x:String>
+                        <x:String>Vestuário</x:String>
+                        <x:String>Outros</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
             <DatePicker x:Name="validadeDatePicker" Format="dd/mm/yyyy" />
             <Button x:Name="AdicionarProduto" Text="Adicionar Produto" Clicked="AdicionarProduto_Clicked"/>
             <Button x:Name="IrParaLista" Text="Ver Lista de Produtos" Clicked="IrParaLista_Clicked"/>
