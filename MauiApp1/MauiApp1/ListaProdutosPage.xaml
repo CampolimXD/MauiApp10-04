@@ -3,67 +3,133 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              x:Class="MauiApp1.ListaProdutosPage"
-             Title="ListaProdutosPage">
-    <VerticalStackLayout Padding="20" Spacing="10">
+             Title="Lista de Produtos"
+             BackgroundColor="#F4F5F6">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
 
-        <Label Text="Lista de Produtos" 
-               FontSize="24" 
-               HorizontalOptions="Center" />
+            <!-- Cabeçalho -->
+            <Label Text="Lista de Produtos"
+               FontSize="28"
+               FontAttributes="Bold"
+               TextColor="#2F3E46"
+               HorizontalOptions="Center"
+               Margin="0,10,0,0"/>
 
-        <Picker x:Name="filtroCategoriaPicker" 
-                Title="Filtrar por Categoria" 
-                SelectedIndexChanged="filtroCategoriaPicker_SelectedIndexChanged">
-            <Picker.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>Todas</x:String>
-                    <x:String>Alimentos</x:String>
-                    <x:String>Eletrônicos</x:String>
-                    <x:String>Vestuário</x:String>
-                    <x:String>Outros</x:String>
-                </x:Array>
-            </Picker.ItemsSource>
-        </Picker>
+            <!-- Filtro de Categorias -->
+            <Frame CornerRadius="12"
+               BorderColor="#B0B8BD"
+               Padding="0"
+               BackgroundColor="#FFFFFF">
+                <Picker x:Name="filtroCategoriaPicker"
+                  Title="Filtrar por Categoria"
+                  TitleColor="#C8D6D7"
+                  TextColor="#2F3E46"
+                  Margin="10,5"
+                  SelectedIndexChanged="filtroCategoriaPicker_SelectedIndexChanged">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Todas</x:String>
+                            <x:String>Alimentos</x:String>
+                            <x:String>Eletrônicos</x:String>
+                            <x:String>Vestuário</x:String>
+                            <x:String>Outros</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+            </Frame>
 
-        <ListView x:Name="produtosListView">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding Nome}" 
-                                   FontSize="20" 
-                                   FontAttributes="Bold" />
+            <!-- Alerta -->
+            <Label x:Name="AlertaLabel"
+               FontSize="16"
+               FontAttributes="Bold"
+               TextColor="#E76F51"
+               HorizontalTextAlignment="Center"/>
 
-                            <Label Text="{Binding Descricao}" 
-                                   FontSize="16" />
+            <!-- Lista de produtos -->
+            <Frame CornerRadius="16"
+               BorderColor="#B0B8BD"
+               Padding="0"
+               BackgroundColor="#FFFFFF"
+               VerticalOptions="FillAndExpand">
+                <ListView x:Name="produtosListView"
+                    ItemTapped="produtosListView_ItemTapped"
+                    BackgroundColor="Transparent"
+                    SeparatorColor="#B0B8BD"
+                    HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Frame CornerRadius="12"
+                         Padding="10"
+                         Margin="10,5"
+                         BackgroundColor="#ECEFF1"
+                         BorderColor="#B0B8BD">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto">
+                                        <!-- Imagem do produto -->
+                                        <Image Grid.Column="0"
+                             Source="{Binding CaminhoImagem}"
+                             HeightRequest="80"
+                             WidthRequest="80"
+                             Aspect="AspectFill"
+                             BackgroundColor="#E9ECEF"
+                             Margin="0,0,12,0"/>
 
-                            <Label Text="{Binding Categoria}" 
-                                   FontSize="14" 
-                                   TextColor="Gray" />
+                                        <!-- Informações do produto -->
+                                        <VerticalStackLayout Grid.Column="1" Spacing="4" VerticalOptions="Center">
+                                            <Label Text="{Binding Nome}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="#2F3E46"/>
+                                            <Label Text="{Binding Descricao}"
+                               FontSize="14"
+                               TextColor="#4A5568"
+                               LineBreakMode="TailTruncation"
+                               MaxLines="2"/>
+                                            <Label Text="{Binding Categoria}"
+                               FontSize="13"
+                               TextColor="#4A5568"/>
+                                            <Label Text="{Binding ValidadeFormatada}"
+                               FontSize="13" TextColor="#4A5568">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label"
+                                         Binding="{Binding IsValidadeVencida}"
+                                         Value="True">
+                                                        <Setter Property="TextColor" Value="#E76F51"/>
+                                                        <Setter Property="FontAttributes" Value="Bold"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label"
+                                         Binding="{Binding ValidadeFormatada}"
+                                         Value="{x:Null}">
+                                                        <Setter Property="Text" Value="Sem validade"/>
+                                                        <Setter Property="TextColor" Value="#4A5568"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </VerticalStackLayout>
 
-                            <Label Text="{Binding PrecoFormatado}" 
-                                   FontSize="18" 
-                                   TextColor="Green" />
+                                        <!-- Preço à direita -->
+                                        <Label Grid.Column="2"
+                             Text="{Binding PrecoFormatado}"
+                             FontSize="16"
+                             FontAttributes="Bold"
+                             TextColor="#63b892"
+                             VerticalOptions="Center"/>
+                                    </Grid>
+                                </Frame>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Frame>
 
-                            <Label Text="{Binding ValidadeFormatada}" FontSize="14">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label" 
-                                             Binding="{Binding IsValidadeVencida}" 
-                                             Value="True">
-                                        <Setter Property="TextColor" Value="Red" />
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label" 
-                                             Binding="{Binding ValidadeFormatada}" 
-                                             Value="{x:Null}">
-                                        <Setter Property="Text" Value="Sem validade" />
-                                        <Setter Property="TextColor" Value="Gray" />
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-
-    </VerticalStackLayout>
+            <!-- Resumo centralizado -->
+            <Label x:Name="resumoLabel"
+               FontSize="16"
+               FontAttributes="Bold"
+               TextColor="#2F3E46"
+               HorizontalOptions="Center"
+               Margin="0,5,0,10"/>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
